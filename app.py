@@ -11,21 +11,23 @@ if not os.path.exists(DOWNLOAD_DIR):
     os.makedirs(DOWNLOAD_DIR)
 
 def download_audio(url):
-ydl_opts = {
-    'format': 'bestaudio/best',
-    'outtmpl': os.path.join(DOWNLOAD_DIR, 'audio_track.%(ext)s'),
-    'postprocessors': [{
-        'key': 'FFmpegExtractAudio',
-        'preferredcodec': 'wav',
-        'preferredquality': '192',
-    }],
-    'quiet': True,
-    'noplaylist': True,  # <--- Make sure to add this comma!
-    'extractor_args': {'youtube': {'player_client': ['default,-android_sdkless']}},
-    'nocheckcertificate': True
-}
+    ydl_opts = {
+        'format': 'bestaudio/best',
+        'outtmpl': os.path.join(DOWNLOAD_DIR, 'audio_track.%(ext)s'),
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'wav',
+            'preferredquality': '192',
+        }],
+        'quiet': True,
+        'noplaylist': True,
+        'extractor_args': {'youtube': {'player_client': ['default,-android_sdkless']}},
+        'nocheckcertificate': True
+    }
+    
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
+        
     return os.path.join(DOWNLOAD_DIR, 'audio_track.wav')
 
 def analyze_audio(file_path):
